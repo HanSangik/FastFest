@@ -96,7 +96,7 @@ String phone= StringUtil.nullToValue(session.getAttribute("phone"), "");
            <div class="inner_main_menu">
                 <ul id="menu">
                     <li><a href="http://localhost:8080/FastFest/">Home</a></li>
-                    <li><a href="">공지사항</a></li>
+                    <li><a  class="nav-link" href="${commonURL}/note/list">공지사항</a></li>
                     <li><a href="">게시판</a>
                         <ul style = "background: #0067a3">
                             <li><a href="">자유게시판</a></li>
