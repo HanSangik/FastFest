@@ -11,7 +11,7 @@ public class NoteDto extends BaseDto{
 	private String note_regdate="";
 	private String note_moddate="";
 	private String note_delyn="";
-	private String note_hit="";
+	private String note_hit="1";
 	
 	
 	public String getNote_seq() {

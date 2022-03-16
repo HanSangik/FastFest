@@ -112,9 +112,9 @@
 	
 	<insert id="Note_insert" parameterType="NoteDto">
 		insert into pro1_note_board
-		(note_title, note_userid, note_contents, note_regdate)
+		(note_title, note_userid, note_contents, note_regdate, note_hit)
 		values
-		(#{note_title}, #{note_userid}, #{note_contents}, now())
+		(#{note_title}, #{note_userid}, #{note_contents}, now(), #{note_hit})
 	
 	</insert>
 	

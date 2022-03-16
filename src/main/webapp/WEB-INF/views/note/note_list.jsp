@@ -32,7 +32,6 @@
 <%
 	BoardDto dto = (BoardDto)request.getAttribute("boardDto");	//추가
 %> 
-<%=userLevel %>
 	<form name="myform" method="get">
 		<input type="hidden" name="key" id="key" value="<%=key%>"/>
 		<input type="hidden" name="pg" id="pg" value="<%=pg %>"/>
