@@ -23,6 +23,32 @@ public class NoteDaoImpl implements NoteDao{
 	public int getTotal(NoteDto dto) {
 		return sm.selectOne("Note_getTotal",dto);
 	}
+
+	@Override
+	public NoteDto getView(String note_seq) {
+		return sm.selectOne("Note_getView", note_seq);
+	}
+
+	@Override
+	public void update(NoteDto dto) {
+		sm.update("Note_update", dto);
+	}
+
+	@Override
+	public void insert(NoteDto dto) {
+		sm.insert("Note_insert", dto);
+	}
+
+	@Override
+	public void delete(String note_seq) {
+		sm.delete("Note_delete", note_seq);
+	}
+
+	@Override
+	public void updateHit(String note_seq) {
+		sm.update("Note_update_hit", note_seq);
+		
+	}
 	
 	
 

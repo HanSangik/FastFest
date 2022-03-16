@@ -12,7 +12,7 @@ String userid= StringUtil.nullToValue(session.getAttribute("userid"), "");
 String username= StringUtil.nullToValue(session.getAttribute("username"), "");
 String email= StringUtil.nullToValue(session.getAttribute("email"), "");
 String phone= StringUtil.nullToValue(session.getAttribute("phone"), "");
-
+String userLevel=StringUtil.nullToValue(session.getAttribute("userLevel"),"");	//공지사항 글쓰기는 관리자만
 %>
 <meta charset="UTF-8">
 

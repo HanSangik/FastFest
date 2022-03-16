@@ -10,11 +10,14 @@
 <head>
 	<meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport1" content="width=device-width, initial-scale=1.0">
 	<title>FastFest - 공지</title>
 	
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+	<meta name="viewport2" content="width=device-width, initial-scale=1">
+	<link href="${path}/resources/css/00_member.css" rel="stylesheet" />
 	
 </head>
 <body>
@@ -28,18 +31,19 @@
 %>
 <%
 	BoardDto dto = (BoardDto)request.getAttribute("boardDto");	//추가
-%>
+%> 
+<%=userLevel %>
 	<form name="myform" method="get">
 		<input type="hidden" name="key" id="key" value="<%=key%>"/>
 		<input type="hidden" name="pg" id="pg" value="<%=pg %>"/>
-		<input type="hidden" name="id" id="id" value=""/>
+		<input type="hidden" name="note_seq" id="note_seq" value=""/>
 		
 		<div class="container" style="margin-top:80px">
 			<h2>공지사항 (${totalCnt}건)</h2>
 			
 			
 	        <div class="input-group mb-3" style="margin-top:20px;">
-	            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+	            <button type="button" class="btn btn-outline-success dropdown-toggle" data-bs-toggle="dropdown"
 	            	id="searchItem">
 	                선택하세요
 	            </button>
@@ -51,10 +55,10 @@
 	            </ul>
 	            <input type="text" class="form-control" placeholder="Search"
 	            	name="keyword" id="keyword" value="<%=keyword%>">
-	            <button class="btn btn-secondary" type="button" onclick="goSearch()">Go</button>
+	            <button class="btn btn-outline-success" type="button" onclick="goSearch()">Go</button>
 	          </div>
 			          
-			          
+			           
 				<table class ="table table-hover" >
 					<colgroup>
 						<col width="8%">
@@ -63,7 +67,7 @@
 						<col width="12%">
 						<col width="8%">
 					</colgroup>
-					<thead class="table-secondary">
+					<thead class="table-light">
 						<tr>
 							<th>번호</th>
 							<th>제목</th>
@@ -81,8 +85,9 @@
 					<tr>
 					<td><%=totalCnt - tempDto.getRnum()+1 %></td>
 			            <td><a href="#none"  onclick="goView('<%=tempDto.getNote_seq()%>')"  style="text-decoration:none; color:black;"><%=tempDto.getNote_title()%></a></td>
-						<td><%=tempDto.getNote_userid() %></td>
+						<td><%=userid %></td>
 						<td><%=tempDto.getNote_regdate() %></td>
+						<td><%=tempDto.getNote_hit() %></td>
 					</tr>
 					<%}%>
 					</tbody>
@@ -91,7 +96,13 @@
 				<div class="container mt-3" style="text-align:right;">
 					<%=Pager.makeTag(request, 10, totalCnt) %>	
 				</div>
-		
+				
+				<% if (userLevel.equals("1")) { %>
+	       		<div class="container mt-3" style="text-align:right";>
+	       			<a href="<%=request.getContextPath() %>/note/write"
+	       				class="btn btn-outline-success">글쓰기</a>
+	       		</div>
+	       		<%} %>
 	       	</div>
 	</form>
 </body>
@@ -133,7 +144,7 @@ function goPage(pg)
 function goView(id)
 {
 	let frm=document.myform;
-	frm.id.value=id;
+	frm.note_seq.value=id;
 	frm.method="get";
 	frm.action="${pageContext.request.contextPath}/note/view";
 	frm.submit();

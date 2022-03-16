@@ -90,6 +90,7 @@ public class MemberController {
 		//예외(쿠키 또는 세션- 세션을 사용한다.)
 		//쿠키 - 본인컴퓨터에 session- 서버에(보안을 강화시키고자 할때(
 		System.out.println("[member_login_proc]----" + dto.getUser_id() + "," + dto.getUser_password());
+		System.out.println("[member_login_proc]----" + dto.getUser_level());
 		HttpSession session = request.getSession();
 		
 		MemberDto resultDto = memberService.getInfo(dto);
@@ -102,16 +103,20 @@ public class MemberController {
 		}
 		else
 		{
+			System.out.println(resultDto.getUser_password().equals(dto.getUser_password()));
 			if(resultDto.getUser_password().equals(dto.getUser_password()))
 			{
+				System.out.println("111111111111111111111");
 				map.put("flag", "1"); //로그온 성공시 세션에 정보를 저장한다 
 				session.setAttribute("userid", resultDto.getUser_id());
 				session.setAttribute("username", resultDto.getUser_name());
 				session.setAttribute("usermail", resultDto.getUser_mail());
 				session.setAttribute("userphone", resultDto.getUser_phone());
+				session.setAttribute("userLevel", resultDto.getUser_level());		////////// 윤호 추가
 			}
 			else
 			{
+				System.out.println("2222222222222222222");
 				map.put("flag", "3");
 			}
 		}

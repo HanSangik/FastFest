@@ -11,7 +11,7 @@ public class NoteDto extends BaseDto{
 	private String note_regdate="";
 	private String note_moddate="";
 	private String note_delyn="";
-	private String note_Hit="";
+	private String note_hit="";
 	
 	
 	public String getNote_seq() {
@@ -56,14 +56,14 @@ public class NoteDto extends BaseDto{
 	public void setNote_delyn(String note_delyn) {
 		this.note_delyn = note_delyn;
 	}
-	public String getNote_Hit() {
-		return note_Hit;
+	public String getNote_hit() {
+		return note_hit;
 	}
-	public void setNote_Hit(String note_Hit) {
-		this.note_Hit = note_Hit;
+	public void setNote_hit(String note_hit) {
+		this.note_hit = note_hit;
 	}
 	public NoteDto(String note_seq, String note_userid, String note_title, String note_contents, String note_regdate,
-			String note_moddate, String note_delyn, String note_Hit) {
+			String note_moddate, String note_delyn, String note_hit) {
 		super();
 		this.note_seq = note_seq;
 		this.note_userid = note_userid;
@@ -72,7 +72,7 @@ public class NoteDto extends BaseDto{
 		this.note_regdate = note_regdate;
 		this.note_moddate = note_moddate;
 		this.note_delyn = note_delyn;
-		this.note_Hit = note_Hit;
+		this.note_hit = note_hit;
 	}
 	public NoteDto() {
 		super();

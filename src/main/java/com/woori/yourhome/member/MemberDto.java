@@ -66,4 +66,12 @@ public class MemberDto {
 	public void setUser_level(String user_level) {
 		this.user_level = user_level;
 	}
+	@Override
+	public String toString() {
+		return "MemberDto [user_key=" + user_key + ", user_id=" + user_id + ", user_password=" + user_password
+				+ ", user_name=" + user_name + ", user_mail=" + user_mail + ", user_phone=" + user_phone
+				+ ", user_wdate=" + user_wdate + ", user_active=" + user_active + ", user_level=" + user_level + "]";
+	}
+	
+	
 }
