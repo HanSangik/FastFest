@@ -13,41 +13,47 @@
 	
 	<select id="Gallery_getList"  parameterType="GalleryDto"  resultType="GalleryDto">
  		
- 		select * from 
- 		(
-	 		select
-				A.id
-				,A.title
-				,A.writer
-				,A.comment
-				,A.image  
-				,A.wdate
-			    ,@rownum := @rownum+1 AS rnum
-				from t_gallery A, (select @rownum:=0) B
-				
-				
-			<if test='key!=null and keyword!=null'>
-	
-				<if test='key=="1"'>
-				where title like concat('%', #{keyword} , '%') or
-				      comment like concat('%', #{keyword} , '%') or 
-				      writer like concat('%', #{keyword} , '%') 
-				</if>
-				
-				<if test='key=="2"'>
-				where title like concat('%', #{keyword} , '%')
-				</if>
-				
-				<if test='key=="3"'>
-				where comment like concat('%', #{keyword} , '%')
-				</if>
-				
-				<if test='key=="4"'>
-				where title like concat('%', #{keyword} , '%') or
-				      comment like concat('%', #{keyword} , '%') 
-				</if>
-				
-			</if> 
+			select * from (
+				select T.*, @rownum := @rownum+1 AS rnum,
+				(
+					case
+				    when T.id in 
+							(select  B.like_boardId
+								from t_gallery A, pro1_like B
+								where 
+								B.like_userId = #{userSeq}
+								and
+								B.like_boardType = 2
+								and
+								B.like_boardId = A.id)
+						then '1'
+					 else '0'
+				     end
+				) as likeYN
+				from t_gallery T, (select @rownum:=0) R
+
+				<if test='key!=null and keyword!=null'>
+		
+					<if test='key=="1"'>
+					where title like concat('%', #{keyword} , '%') or
+					      comment like concat('%', #{keyword} , '%') or 
+					      writer like concat('%', #{keyword} , '%') 
+					</if>
+					
+					<if test='key=="2"'>
+					where title like concat('%', #{keyword} , '%')
+					</if>
+					
+					<if test='key=="3"'>
+					where comment like concat('%', #{keyword} , '%')
+					</if>
+					
+					<if test='key=="4"'>
+					where title like concat('%', #{keyword} , '%') or
+					      comment like concat('%', #{keyword} , '%') 
+					</if>
+					
+				</if> 
 			
 			order by id desc
 		) A
@@ -105,6 +111,7 @@
 			,A.comment 
 			,A.wdate
 			,A.image
+			,ifnull(likehit, 0) likehit
 		from t_gallery A where id=#{id}
 
 	</select>
@@ -122,6 +129,49 @@
 			,image = #{image}
 	where  id=#{id}
 	</update>
+	
+		<!-- 게시글 추천수 -->
+	<update id="updateLike" parameterType="int">
+		update t_gallery set 
+		likehit = likehit+1
+		where id = #{id}
+	</update>
+	
+	<!-- 게시글 추천수취소 -->
+	<update id="updateLikeCancel" parameterType="int">
+		update t_gallery set 
+		likehit = likehit - 1
+		where id = #{id}
+	</update>
+	
+	<!-- 게시글 추천 시 Like 테이블에 insert -->
+	<insert id="insertLike">
+		insert into MP_LIKE( id , userid) 
+		values(#{id} ,#{writer})
+	</insert>
+	
+	<!-- 게시글 추천취소 시 delete -->
+	<delete id="deleteLike">
+		delete from MP_LIKE where id = #{id} and userid = #{writer}
+	</delete>
+	
+	<!-- 게시글 추천 시 Check를 1로 만들어서 중복방지-->
+	<update id="updateLikeCheck">
+		update MP_LIKE set LIKECHECK = 1
+		where id = #{id} and userid = #{writer}
+	</update>
+	
+	<!-- 게시글 추천취소 시 다시 0  -->
+	<update id="updateLikeCheckCancel">
+		update MP_LIKE set LIKECHECK = 0
+		where id = #{id} and userid = #{writer}
+	</update>
+	
+	<!-- 게시글 추천 중복방지 select문 -->
+	<select id="likeCheck" resultType="int">
+		select count(*) from MP_LIKE where id = #{id} and userid = #{writer} 
+	</select>	
+	
 		
 </mapper>
 

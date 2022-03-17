@@ -1,83 +1,76 @@
 package com.woori.yourhome.member;
 
 public class MemberDto {
-	private String id="";
-	private String userid="";
-	private String password="";
-	private String username="";
-	private String email="";
-	private String wdate="";
-	private String nickname="";
-	private String phone="";
-	private String zipcode="";
-	private String address1="";
-	private String address2="";
+
+	private String user_key="";
+	private String user_id="";
+	private String user_password="";
+	private String user_name="";
+	private String user_mail="";
+	private String user_phone="";
+	private String user_wdate="";
+	private String user_active="";
+	private String user_level="";
 	
-	public String getId() {
-		return id;
+	public String getUser_key() {
+		return user_key;
 	}
-	public void setId(String id) {
-		this.id = id;
+	public void setUser_key(String user_key) {
+		this.user_key = user_key;
 	}
-	public String getUserid() {
-		return userid;
+	public String getUser_id() {
+		return user_id;
 	}
-	public void setUserid(String userid) {
-		this.userid = userid;
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
 	}
-	public String getPassword() {
-		return password;
+	public String getUser_password() {
+		return user_password;
 	}
-	public void setPassword(String password) {
-		this.password = password;
+	public void setUser_password(String user_password) {
+		this.user_password = user_password;
 	}
-	public String getUsername() {
-		return username;
+	public String getUser_name() {
+		return user_name;
 	}
-	public void setUsername(String username) {
-		this.username = username;
+	public void setUser_name(String user_name) {
+		this.user_name = user_name;
 	}
-	public String getEmail() {
-		return email;
+	public String getUser_mail() {
+		return user_mail;
 	}
-	public void setEmail(String email) {
-		this.email = email;
+	public void setUser_mail(String user_mail) {
+		this.user_mail = user_mail;
 	}
-	public String getWdate() {
-		return wdate;
+	public String getUser_phone() {
+		return user_phone;
 	}
-	public void setWdate(String wdate) {
-		this.wdate = wdate;
+	public void setUser_phone(String user_phone) {
+		this.user_phone = user_phone;
 	}
-	public String getNickname() {
-		return nickname;
+	public String getUser_wdate() {
+		return user_wdate;
 	}
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
+	public void setUser_wdate(String user_wdate) {
+		this.user_wdate = user_wdate;
 	}
-	public String getPhone() {
-		return phone;
+	public String getUser_active() {
+		return user_active;
 	}
-	public void setPhone(String phone) {
-		this.phone = phone;
+	public void setUser_active(String user_active) {
+		this.user_active = user_active;
 	}
-	public String getZipcode() {
-		return zipcode;
+	public String getUser_level() {
+		return user_level;
 	}
-	public void setZipcode(String zipcode) {
-		this.zipcode = zipcode;
+	public void setUser_level(String user_level) {
+		this.user_level = user_level;
 	}
-	public String getAddress1() {
-		return address1;
-	}
-	public void setAddress1(String address1) {
-		this.address1 = address1;
-	}
-	public String getAddress2() {
-		return address2;
-	}
-	public void setAddress2(String address2) {
-		this.address2 = address2;
+	@Override
+	public String toString() {
+		return "MemberDto [user_key=" + user_key + ", user_id=" + user_id + ", user_password=" + user_password
+				+ ", user_name=" + user_name + ", user_mail=" + user_mail + ", user_phone=" + user_phone
+				+ ", user_wdate=" + user_wdate + ", user_active=" + user_active + ", user_level=" + user_level + "]";
 	}
 	
 	

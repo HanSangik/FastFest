@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="Like">
+
+	<!-- 쿼리를 xml로 작성하고 id:식별값  
+		  parameterType:우리가 전달할값 
+	     resultType : 받아오는값  -->
+	     
+	<!-- if test="key=='1'"  - 이렇게 쓰면 안된다 인식안된다 -->
+	
+	<select id="Like_getList"  parameterType="LikeDto"  resultType="LikeDto">
+ 		
+		select * from(
+		select a.like_userId as userid,  b.title as title, b.userid as writer, b.regdate as regdate, 1 as like_boardType, b.seq as like_boardId
+		from
+		pro1_like a,  (select seq, title, userid, regdate, 1 as like_boardType from free_board) b
+		where 
+		a.like_boardId = b.seq
+		and
+		a.like_boardType = b.like_boardType
+		
+		union all
+		
+		select a.like_userId as userid, b.title as title , b.writer as writer , b.wdate as regdate , 2 as like_boardType, b.id as like_boardId
+		from 
+		pro1_like a,  (select id, title, writer, wdate, 2 as like_boardType from t_gallery) b 
+		where
+		a.like_boardId = b.Id
+		and
+		a.like_boardType = b.like_boardType) c
+         where c.userid = #{id}
+
+ 
+	</select>
+	<!--  
+		paging  쿼리는  dbms마다 다르다 
+		
+		select ~~  limit 시작위치, 개수
+	
+	 -->
+	 <select id="Like_isduplicate" parameterType="LikeDto" resultType="Integer">
+		select count(*) from pro1_like
+		where like_boardType=#{like_boardType} and
+		like_boardId=#{like_boardId} and
+		like_userId=#{like_userId}
+	</select>
+	
+	
+	<insert id="Like_insert" parameterType="LikeDto">
+		insert into pro1_like
+		( like_boardType, like_boardId, like_userId)
+		values
+		(#{like_boardType}, #{like_boardId}, #{like_userId})
+	</insert>
+	
+	
+	<delete id="Like_delete" parameterType="String" >
+	delete from pro1_like where like_boardId=#{like_boardId} and 
+	like_boardType=#{like_boardType} and
+	like_userId=#{like_userId}
+	</delete>
+	
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

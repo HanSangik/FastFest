@@ -7,7 +7,7 @@
 <h2 id="h2title" style="text-align:left; font-family: 'Dongle' !important; font-size: 25pt" >* 이달의 지역별 축제 및 행사 *</h2>
 <hr width=1000px>
 <div id="h2sub"></div>
-<div id="imagediv" style="display:block; text-align:center;"><img class="img1" src="/yourhome/resources/images/클릭전2.png"></div>
+<div id="imagediv" style="display:block; text-align:center;"><img class="img1" src="<%=request.getContextPath()%>/resources/images/클릭전2.png"></div>
 
 
 <div id="festboard"></div>

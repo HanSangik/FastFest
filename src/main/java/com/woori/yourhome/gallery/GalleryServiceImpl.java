@@ -45,5 +45,39 @@ public class GalleryServiceImpl implements GalleryService{
 		return galleryDao.getView(dto);
 	}
 	
+	@Override
+	public void updateLike(int id) throws Exception{
+		galleryDao.updateLike(id);
+	}
 	
+	@Override
+	public void updateLikeCancel(int id) throws Exception{
+		galleryDao.updateLikeCancel(id);
+	}
+
+	
+	@Override
+	public void insertLike(int id,String writer) throws Exception{
+		galleryDao.insertLike(id, writer);
+	}
+	
+	@Override
+	public void deleteLike(int id,String writer)throws Exception{
+		galleryDao.deleteLike(id, writer);
+	}
+	
+	@Override
+	public int likeCheck(int id,String writer) throws Exception{
+		return galleryDao.likeCheck(id, writer);
+	}
+	
+	@Override
+	public void updateLikeCheck(int id,String writer)throws Exception{
+		galleryDao.updateLikeCheck(id, writer);
+	}
+	
+	@Override
+	public void updateLikeCheckCancel(int id,String writer)throws Exception{
+		galleryDao.updateLikeCheckCancel(id, writer);
+	}
 }

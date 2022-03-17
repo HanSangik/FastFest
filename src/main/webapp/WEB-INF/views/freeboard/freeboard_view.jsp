@@ -13,6 +13,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dongle:wght@300&display=swap" rel="stylesheet">
 </head>
 <body>
     <%@include file="../include/nav.jsp" %>
@@ -31,7 +32,7 @@
       <input type="hidden" name="key"     value="<%=key%>" >
       <input type="hidden" name="keyword" value="<%=keyword%>" >
       
-    <div class="container" style="margin-top:80px">
+    <div class="container" style="margin-top:100px;font-family: 'Dongle', sans-serif; font-size:20pt">
         <h2>게시판 상세보기</h2>
         <table class="table table-hover " style="margin-top:30px;">
             <tbody>
@@ -41,7 +42,7 @@
               </tr>
               <tr >
                 <th >작성자</th>
-                <td><%=dto.getUsername()%></td>
+                <td><%=dto.getUserid()%></td>
                 <th>작성일</th>
                 <td><%=dto.getRegdate()%></td>
        
@@ -57,16 +58,28 @@
             </tbody>
           </table>
 
- 
-       
+ 		   <%if(userid.equals("")) {%>
+           
+           <%}else{%>
+           		<div  style="margin-right:1px;">
+				<button type="button" class="btn btn-warning " id="like_btn" onclick="updateLike()" style="width:80px;height:40px;font-size:15pt">추천 <%=dto.getLikehit() %></button>
+           <%} %>
+	       
+
+		 </div>
+
           <div class="container mt-3" style="text-align:right;">
-            <a href="#none" onclick="goList()" class="btn btn-secondary">목록</a>
-            <a href="#none" onclick="goReply()" class="btn btn-secondary">답글달기</a>
-            
-            <%if(userid.equals(dto.getUsername())) {%>
-            <a href="#none" onclick="goModify()" class="btn btn-secondary">수정</a>
-            <a href="#none" onclick="goDelete()" class="btn btn-secondary">삭제</a>
+            <a href="#none" onclick="goList()" class="btn btn-secondary" style="width:80px;height:40px;font-size:15pt">목록</a>
+            <a href="#none" onclick="goReply()" class="btn btn-secondary" style="width:80px;height:40px;font-size:15pt">답글달기</a>
+
+            <%if(userid.equals(dto.getUserid())) {%>
+            <a href="#none" onclick="goModify()" class="btn btn-secondary" style="width:80px;height:40px;font-size:15pt">수정</a>
+            <a href="#none" onclick="goDelete()" class="btn btn-secondary" style="width:80px;height:40px;font-size:15pt">삭제</a>
             <% }%>
+            <%if(!userid.equals("")) {%>
+         	<a href="#none" onclick="golike()" class="btn btn-secondary" id ="btn_like" style="width:80px;height:40px;font-size:15pt">즐겨찾기</a>
+         	<a href="#none" onclick="golikelist()" class="btn btn-secondary" id ="btn_like" style="width:80px;height:40px;font-size:15pt">즐겨찾기목록</a>
+		  	<%}%>
           </div>
           
           
@@ -78,24 +91,25 @@
               </colgroup>
           <thead>
             <tr>
-              <th colspan="3"> 댓글</th>
+              <th colspan="3" style="width:80px;height:40px;font-size:15pt"> 댓글</th>
             </tr>
           </thead>
           <tbody >
                
           </tbody>
         </table>
-          
+          	<input type="hidden" name="usernum" id="usernum" value="<%=id%>" />
             <input type="hidden" name="userid" id="userid" value="<%=userid%>" />
             <input type="hidden" name="board_id" id="board_id" value="<%=dto.getSeq()%>" />
             <input type="hidden" name="comment_id" id="comment_id" value="" />
+             <input type="hidden" name="likeflag" id="likeflag" value="1" />
             
             <div class="mb-3" style="margin-top:13px;">
-               <textarea class="form-control" rows="3" id="comment" name="comment"></textarea>
+               <textarea class="form-control" rows="3" id="comment" name="comment" style="font-size:20px"></textarea>
             </div>
             
             <div class="container mt-3" style="text-align:right;" id="btnRegister">
-               <a href="#none" onclick="goCommentWrite()" class="btn btn-primary"
+               <a href="#none" onclick="goCommentWrite()" class="btn btn-primary" style="width:80px;height:40px;font-size:15pt"
                ><span id="btnCommentSave">댓글등록</span></a>
             </div>
        
@@ -112,17 +126,24 @@ $(function(){
    goInit();
 });
 
+function golikelist(){
+	var frm = document.myform;
+	frm.action="<%=request.getContextPath()%>/like/list";
+	frm.submit();
+}
+
+
 function goList()
 {
    var frm = document.myform;
-   frm.action="<%=request.getContextPath()%>/board/list";
+   frm.action="<%=request.getContextPath()%>/freeboard/list";
    frm.submit();
 }
 
 function goModify()
 {
    var frm = document.myform;
-   frm.action="<%=request.getContextPath()%>/board/modify";
+   frm.action="<%=request.getContextPath()%>/freeboard/modify";
    frm.submit();
 }
 
@@ -132,7 +153,7 @@ function goDelete()
    if( confirm("삭제하시겠습니까?"))
    {
       var frm = document.myform;
-      frm.action="<%=request.getContextPath()%>/board/delete";
+      frm.action="<%=request.getContextPath()%>/freeboard/delete";
       frm.submit();
    }
 }
@@ -183,6 +204,34 @@ function goInit()
    .fail( (error)=>{
       console.log(error);
    })
+   $.ajax({
+	        url:"${commonURL}/like/isDuplicate", //요청 url정보
+	        data:{like_boardId:$("#board_id").val(), like_boardType:"1", like_userId:$("#usernum").val()},   //서버로 전달할 데이터정보: JSON형태
+	        dataType:"json",  //결과를 jSON으로 받겠다. 결과가 text로 온다
+	        type:"POST"
+	     })
+	     .done((data)=>{
+	        //데이터가 정상적으로 수신되면 done메서드 호출되면서 매개변수는 전달받은 값
+	        //값은 dataType 속성을 안주면 text로 온다.
+	        console.log(data.result);
+	       if(data.result == "true") //중복
+	       {
+	    	   $("#btn_like").html("즐겨찾기해제");
+	    	   $("#likeflag").val("2");
+	    	   console.log("likeflag = "+ $("#likeflag").val());
+				
+	       }
+	       else
+	       {
+	    	   $("#btn_like").html("즐겨찾기");
+	    	   $("#likeflag").val("1");
+	    	   console.log("likeflag = "+ $("#likeflag").val());
+	       }
+     })
+     .fail((error)=>{
+        //통신에러, 오류에 관한 것
+           console.log(error)
+     })
 }
 
 function goCommentWrite()
@@ -193,14 +242,13 @@ function goCommentWrite()
       alert("로그인하세요");
       location.href="${commonURL}/member/login";
    }
-   var frmData = new FormData(document.myform);
-     console.log( frmData );
+  
+   var queryString = $("form[name=myform]").serialize(); 
    $.ajax({
       url:"${commonURL}/comment/write",
-      data:frmData,
-      contentType:false,
-      processData:false,
+      data:queryString,
       type:"POST",
+      dataType:"json"
    })
    .done( (result)=>{
        $("#comment").val("");
@@ -252,13 +300,13 @@ function goCommentDelete(comment_id)
       return false;
    
    var frmData = new FormData(document.myform);
-    //console.log( frmData );
+   
    $.ajax({
-      url:"${commonURL}/comment/delete",
-      data:frmData,
-      contentType:false,
-      processData:false,
-      type:"POST",
+	   url:"${commonURL}/comment/delete",
+	      data:frmData,
+	      contentType:false,
+	      processData:false,
+	      type:"POST",
    })
    .done( (result)=>{
       $("#comment").val("");
@@ -275,6 +323,68 @@ function goReply()
    var frm = document.myform;
    frm.action="${commonURL}/freeboard/reply";
    frm.submit();
+}
+
+
+ function updateLike(){ 
+     $.ajax({
+            type : "POST",  
+            url : "${commonURL}/freeboard/updateLike",       
+            dataType : "json",   
+            data : {'seq' : <%=dto.getSeq()%>, 'userid' : '<%=userid%>'},
+            error : function(){
+               alert("통신 에러");
+            },
+            success : function(likeCheck) {
+                
+                    if(likeCheck == 0){
+                    	alert("추천완료.");
+                    	location.reload();
+                    }
+                    else if (likeCheck == 1){
+                     	alert("추천취소");
+                    	location.reload();
+
+                }
+            }
+        });
+ }
+ 
+ function golike(){
+	 var userid ='<%=userid%>';
+	   $("#comment_id").val(comment_id);
+	   if(userid == ""){
+	      alert("로그인하세요");
+	      location.href="${commonURL}/member/login";
+	   }
+	   var flag = $("#likeflag").val();
+	   if(flag == "1"){
+		   $.ajax({
+			   url:"${commonURL}/freeboard/like?board_id="+$("#board_id").val()+"&"+"userSeq="+$("#usernum").val(),
+			      type:"GET",
+			      dataType:"JSON"
+			   })
+			   .done( (result)=>{
+				   goInit();
+			   })
+			   .fail( (error)=>{
+			      console.log(error);
+			   })
+	   }
+	   else{
+		   $.ajax({
+			   url:"${commonURL}/freeboard/unlike?board_id="+$("#board_id").val()+"&"+"userSeq="+$("#usernum").val(),
+			      type:"GET",
+			      dataType:"JSON"
+			   })
+			   .done( (result)=>{
+				   goInit();
+			   })
+			   .fail( (error)=>{
+			      console.log(error);
+			   })
+	   }
+	   
 }
 
 </script>

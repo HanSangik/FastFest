@@ -38,8 +38,8 @@ public class MemberController {
 			return "redirect:/member/login";
 		
 		MemberDto dto = new MemberDto();
-		dto.setUserid(userid);
-		
+		dto.setUser_id(userid);
+
 		MemberDto resultDto = memberService.getInfo(dto);
 		model.addAttribute("memberDto", resultDto);
 		return "member/member_register";
@@ -51,8 +51,9 @@ public class MemberController {
 	               //자바객체를  json 형태로 전환시켜서 반환한다 
 	public HashMap<String, String> member_isDuplicate(MemberDto dto)
 	{
-		System.out.println("userid : " + dto.getUserid());
-		
+
+		System.out.println("userid : " + dto.getUser_id());
+
 		HashMap<String, String> map = new HashMap<String, String>();
 		
 		map.put("result", memberService.isDuplicate(dto)+"");
@@ -65,7 +66,8 @@ public class MemberController {
 	@ResponseBody
 	public HashMap<String, String> member_insert(MemberDto dto)
 	{
-		System.out.println("userid : " + dto.getUserid());
+
+		System.out.println("userid : " + dto.getUser_id());
 		memberService.insert(dto);
 		HashMap<String, String> map = new HashMap<String, String>();
 		
@@ -87,29 +89,35 @@ public class MemberController {
 		//각 페이지별로 정보 공유가 안된다. 
 		//예외(쿠키 또는 세션- 세션을 사용한다.)
 		//쿠키 - 본인컴퓨터에 session- 서버에(보안을 강화시키고자 할때(
+		System.out.println("[member_login_proc]----" + dto.getUser_id() + "," + dto.getUser_password());
+		System.out.println("[member_login_proc]----" + dto.getUser_level());
 		HttpSession session = request.getSession();
 		
 		MemberDto resultDto = memberService.getInfo(dto);
 		HashMap<String, String> map = new HashMap<String, String>();
-		
-		System.out.println(resultDto); // 여기서  null  이 출력이 되는거에요
-		
+		System.out.println(resultDto);
+
 		if(resultDto==null)
 		{
 			map.put("flag", "2");	
 		}
 		else
 		{
-			if(resultDto.getPassword().equals(dto.getPassword()))
+			System.out.println(resultDto.getUser_password().equals(dto.getUser_password()));
+			if(resultDto.getUser_password().equals(dto.getUser_password()))
 			{
+				System.out.println("111111111111111111111");
 				map.put("flag", "1"); //로그온 성공시 세션에 정보를 저장한다 
-				session.setAttribute("userid", resultDto.getUserid());
-				session.setAttribute("username", resultDto.getUsername());
-				session.setAttribute("email", resultDto.getEmail());
-				session.setAttribute("phone", resultDto.getPhone());
+				session.setAttribute("id", resultDto.getUser_key());
+				session.setAttribute("userid", resultDto.getUser_id());
+				session.setAttribute("username", resultDto.getUser_name());
+				session.setAttribute("usermail", resultDto.getUser_mail());
+				session.setAttribute("userphone", resultDto.getUser_phone());
+				session.setAttribute("userLevel", resultDto.getUser_level());		////////// 윤호 추가
 			}
 			else
 			{
+				System.out.println("2222222222222222222");
 				map.put("flag", "3");
 			}
 		}
@@ -152,9 +160,9 @@ public class MemberController {
 			map.put("result", "fail");
 		else
 		{
-			map.put("result", findDto.getUserid());
-			map.put("userid", findDto.getUserid());
-			map.put("username", findDto.getUsername());
+			map.put("result", findDto.getUser_id());
+			map.put("userid", findDto.getUser_id());
+			map.put("username", findDto.getUser_name());
 		}
 		return map;
 	}
@@ -170,9 +178,9 @@ public class MemberController {
 			map.put("result", "fail");
 		else
 		{
-			map.put("result", findDto.getPassword());
-			map.put("userid", findDto.getUserid());
-			map.put("username", findDto.getUsername());
+			map.put("result", findDto.getUser_password());
+			map.put("userid", findDto.getUser_id());
+			map.put("username", findDto.getUser_name());
 		}
 		return map;
 	}

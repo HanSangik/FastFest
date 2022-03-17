@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="Note">
+
+	<!-- 쿼리를 xml로 작성하고 id:식별값  
+		  parameterType:우리가 전달할값 
+	     resultType : 받아오는값  -->
+	     
+	<!-- if test="key=='1'"  - 이렇게 쓰면 안된다 인식안된다 -->
+	
+	<select id="Note_getList"  parameterType="NoteDto"  resultType="NoteDto">
+ 		
+ 		select 
+ 			note_seq
+ 			,note_userid
+ 			,note_title
+ 			,note_contents
+ 			,note_regdate
+ 			,note_moddate
+ 			,note_hit
+ 			,rnum
+ 		from 
+ 		(
+	 		select
+	 			A.note_seq
+				,A.note_userid
+				,A.note_title
+				,A.note_contents
+				,A.note_regdate
+				,A.note_moddate
+				,A.note_hit
+				,@rownum := @rownum+1 AS rnum
+				from pro1_note_board A, (select @rownum:=0) B
+				
+				
+			<if test='key!=null and keyword!=null'>
+	
+				<if test='key=="1"'>
+				where note_title like concat('%', #{keyword} , '%') or
+				      note_contents like concat('%', #{keyword} , '%')
+				</if>
+				
+				<if test='key=="2"'>
+				where note_title like concat('%', #{keyword} , '%')
+				</if>
+				
+				<if test='key=="3"'>
+				where note_contents like concat('%', #{keyword} , '%')
+				</if>
+				
+				<if test='key=="4"'>
+				where note_title like concat('%', #{keyword} , '%') or
+				      note_contents like concat('%', #{keyword} , '%') 
+				</if>
+				
+			</if> 
+			
+			order by note_seq desc
+		) A
+		limit #{start}, #{pageSize}    
+		
+		
+	</select>
+	
+	
+	<select id="Note_getTotal" parameterType="NoteDto" resultType="Integer">
+		select count(*) from pro1_note_board
+		<if test='key!=null and keyword!=null'>
+			
+			<if test='key=="1"'>
+			where note_title like concat('%', #{keyword} , '%') or
+			      note_contents like concat('%', #{keyword} , '%') or 
+			      note_userid like concat('%', #{keyword} , '%') 
+			</if>
+			
+			<if test='key=="2"'>
+			where note_title like concat('%', #{keyword} , '%')
+			</if>
+			
+			<if test='key=="3"'>
+			where note_contents like concat('%', #{keyword} , '%')
+			</if>
+			
+			<if test='key=="4"'>
+			where note_title like concat('%', #{keyword} , '%') or
+			      note_contents like concat('%', #{keyword} , '%') 
+			</if>
+		</if>
+	</select>
+		
+	<select id="Note_getView" parameterType="String" resultType="NoteDto">
+		select
+		 	 A.note_seq
+			,A.note_userid
+			,A.note_title
+			,A.note_contents
+			,A.note_regdate
+			,A.note_hit
+		from pro1_note_board A where note_seq=#{note_seq}
+	</select>
+	
+	<update id="Note_update" parameterType="NoteDto">
+		update pro1_note_board
+			set note_title = #{note_title}
+				,note_userid = #{note_userid}
+				,note_contents = #{note_contents}
+		where note_seq=#{note_seq}
+	</update>
+	
+	<insert id="Note_insert" parameterType="NoteDto">
+		insert into pro1_note_board
+		(note_title, note_userid, note_contents, note_regdate, note_hit)
+		values
+		(#{note_title}, #{note_userid}, #{note_contents}, now(), #{note_hit})
+	
+	</insert>
+	
+	<delete id="Note_delete" parameterType="NoteDto">
+		delete from pro1_note_board where note_seq = #{note_seq}
+	</delete>
+	
+	<update id="Note_update_hit" parameterType="String">
+		update pro1_note_board set note_hit=note_hit+1 where note_seq=#{note_seq}
+	</update>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

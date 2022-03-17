@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="Main2">
+
+	<!-- 쿼리를 xml로 작성하고 id:식별값  
+		  parameterType:우리가 전달할값 
+	     resultType : 받아오는값  -->
+	     
+	<!-- if test="key=='1'"  - 이렇게 쓰면 안된다 인식안된다 -->
+	
+	<select id="Main2_getList"  parameterType="Main2Dto"  resultType="Main2Dto">
+ 		
+			select * from (
+				select T.*, @rownum := @rownum+1 AS rnum,
+				(
+					case
+				    when T.id in 
+							(select  B.like_boardId
+								from t_gallery A, pro1_like B
+								where 
+								B.like_userId = #{userSeq}
+								and
+								B.like_boardType = 2
+								and
+								B.like_boardId = A.id)
+						then '1'
+					 else '0'
+				     end
+				) as likeYN
+				from t_gallery T, (select @rownum:=0) R
+
+				<if test='key!=null and keyword!=null'>
+		
+					<if test='key=="1"'>
+					where title like concat('%', #{keyword} , '%') or
+					      comment like concat('%', #{keyword} , '%') or 
+					      writer like concat('%', #{keyword} , '%') 
+					</if>
+					
+					<if test='key=="2"'>
+					where title like concat('%', #{keyword} , '%')
+					</if>
+					
+					<if test='key=="3"'>
+					where comment like concat('%', #{keyword} , '%')
+					</if>
+					
+					<if test='key=="4"'>
+					where title like concat('%', #{keyword} , '%') or
+					      comment like concat('%', #{keyword} , '%') 
+					</if>
+					
+				</if> 
+			
+			order by id desc
+		) A
+		limit #{start}, #{pageSize}    
+	</select>
+	
+	<select id="Main2_getView"  parameterType="String"  resultType="Main2Dto">
+ 		select
+			A.id
+			,A.title
+			,A.writer
+			,A.comment 
+			,A.wdate
+			,A.image
+			,ifnull(likehit, 0) likehit
+		from t_gallery A where id=#{id}
+
+	</select>
+			
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

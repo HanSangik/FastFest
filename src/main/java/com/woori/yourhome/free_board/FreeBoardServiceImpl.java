@@ -34,6 +34,55 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 		
 		return dao.getView(dto);
 	}
+
+	@Override
+	public void updateLike(int seq) throws Exception{
+		 dao.updateLike(seq);
+	}
 	
+	@Override
+	public void updateLikeCancel(int seq) throws Exception{
+		dao.updateLikeCancel(seq);
+	}
+
 	
+	@Override
+	public void insertLike(int seq,String userid) throws Exception{
+			dao.insertLike(seq, userid);
+	}
+	
+	@Override
+	public void deleteLike(int seq,String userid)throws Exception{
+			dao.deleteLike(seq, userid);
+	}
+	
+	@Override
+	public int likeCheck(int seq,String userid) throws Exception{
+		return dao.likeCheck(seq, userid);
+	}
+	
+	@Override
+	public void updateLikeCheck(int seq,String userid)throws Exception{
+		dao.updateLikeCheck(seq, userid);
+	}
+	
+	@Override
+	public void updateLikeCheckCancel(int seq,String userid)throws Exception{
+		dao.updateLikeCheckCancel(seq, userid);
+	}
+
+	@Override
+	public int getTotal(FreeBoardDto dto) {
+		return dao.getTotal(dto);
+	}
+
+	@Override
+	public void delete(String seq) {
+		dao.delete(seq);
+	}
+
+	@Override
+	public void update(FreeBoardDto dto) {
+		dao.update(dto);
+	}
 }

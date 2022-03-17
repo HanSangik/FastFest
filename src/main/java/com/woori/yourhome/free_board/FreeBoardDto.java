@@ -20,8 +20,15 @@ public class FreeBoardDto extends BaseDto{
 		private int depth=0;
 		private int g_level=1;
 		private String hit="";
+		private int likehit=0;
 		
 		
+		public int getLikehit() {
+			return likehit;
+		}
+		public void setLikehit(int likehit) {
+			this.likehit = likehit;
+		}
 		public String getUsername() {
 			return username;
 		}
@@ -112,6 +119,15 @@ public class FreeBoardDto extends BaseDto{
 		public void setHit(String hit) {
 			this.hit = hit;
 		}
+		@Override
+		public String toString() {
+			return "FreeBoardDto [seq=" + seq + ", userid=" + userid + ", username=" + username + ", title=" + title
+					+ ", contents=" + contents + ", filename1=" + filename1 + ", filename2=" + filename2
+					+ ", filename3=" + filename3 + ", regdate=" + regdate + ", moddate=" + moddate + ", delyn=" + delyn
+					+ ", group_id=" + group_id + ", depth=" + depth + ", g_level=" + g_level + ", hit=" + hit
+					+ ", likehit=" + likehit + "]";
+		}
+		
 		
 		
 
