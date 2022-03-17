@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.woori.yourhome.comment.CommentDao;
 import com.woori.yourhome.comment.CommentDto;
+import com.woori.yourhome.comment2.Comment2Dao;
+import com.woori.yourhome.comment2.Comment2Dto;
 
 
 @Service("boardService")
@@ -19,6 +21,9 @@ public class BoardServiceImpl implements BoardService{
 	
 	@Resource(name="commentDao")
 	CommentDao commentDao;
+	
+	@Resource(name="comment2Dao")
+	Comment2Dao comment2Dao;
 	
 
 	@Override
@@ -85,6 +90,36 @@ public class BoardServiceImpl implements BoardService{
 	public void comment_delete(CommentDto dto) {
 		commentDao.comment_delete(dto);
 		
+	}
+
+	@Override
+	public Comment2Dto getComment2View(Comment2Dto dto) {
+		
+		return comment2Dao.comment_getView(dto);
+	}
+
+	@Override
+	public void comment2_update(Comment2Dto dto) {
+		comment2Dao.comment_update(dto);
+		
+	}
+
+	@Override
+	public void comment2_delete(Comment2Dto dto) {
+		comment2Dao.comment_delete(dto);
+		
+	}
+
+	@Override
+	public void comment2_insert(Comment2Dto dto) {
+		comment2Dao.insert(dto);
+		
+	}
+
+	@Override
+	public List<Comment2Dto> getComment2List(Comment2Dto dto) {
+		// TODO Auto-generated method stub
+		return comment2Dao.getList(dto);
 	}
 	
 }

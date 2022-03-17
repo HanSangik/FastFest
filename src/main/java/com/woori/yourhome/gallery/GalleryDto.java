@@ -10,8 +10,29 @@ public class GalleryDto extends BaseDto{
 	private String wdate="";
 	private String delyn="";
 	private String image="";
+	private int likehit=0; //추천
+	private int likeYN=0; //즐겨찾기
+	private String userSeq="";
 	
 	
+	public String getUserSeq() {
+		return userSeq;
+	}
+	public void setUserSeq(String userSeq) {
+		this.userSeq = userSeq;
+	}
+	public int getLikeYN() {
+		return likeYN;
+	}
+	public void setLikeYN(int likeYN) {
+		this.likeYN = likeYN;
+	}
+	public int getLikehit() {
+		return likehit;
+	}
+	public void setLikehit(int likehit) {
+		this.likehit = likehit;
+	}
 	public String getImage() {
 		return image;
 	}
@@ -53,6 +74,11 @@ public class GalleryDto extends BaseDto{
 	}
 	public void setDelyn(String delyn) {
 		this.delyn = delyn;
+	}
+	@Override
+	public String toString() {
+		return "GalleryDto [id=" + id + ", title=" + title + ", writer=" + writer + ", comment=" + comment + ", wdate="
+				+ wdate + ", delyn=" + delyn + ", image=" + image + ", likehit=" + likehit + "]";
 	}
 	
 	

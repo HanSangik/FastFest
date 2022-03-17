@@ -1,110 +1,47 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" 
-   pageEncoding="UTF-8"%>
-<%@page import="com.woori.yourhome.member.*" %>
-
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@page import="com.woori.yourhome.member.*"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:set var="path" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<title>Insert title here</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  
-   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<meta charset="utf-8">
+	<title>Insert title here</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<link href="${path}/resources/css/00_member.css" rel="stylesheet" />
 </head>
 <body>
-
-<%@include file="../include/nav.jsp" %>
-
-<%
-MemberDto dto = (MemberDto)request.getAttribute("memberDto");
-%>
-<form name="myform" id="myform">
-	
-   
-<div class="container" style="margin-top:80px">
-  <h1>회원가입</h1>
-
-	<% if(dto.getUserid().equals("")) {%>
-  <div class="input-group mb-3">
-     <input type="hidden" name="idcheck" id="idcheck" value="N"/>
-    <input type="text" class="form-control" placeholder="아이디" name="userid" id="userid">
-    <div class="input-group-append">
-      <button class="btn btn-success" type="button" id="btnDuplicate">중복체크</button>  
-     </div>
-  </div>
-  <%} else{%>
-
-  <div class="input-group mb-3">
-     <input type="hidden" name="idcheck" id="idcheck" value="Y"/>
-    <input type="text" class="form-control" placeholder="아이디" name="userid" id="userid"
-         value="<%=dto.getUserid()%>"  readonly>
-   
-  </div>
-  <%} %>
-  
-  
-  <div class="input-group mb-3">
-    <input type="password" class="form-control" name="password" id="password" placeholder="페스워드">
-  </div>
-
-  <div class="input-group mb-3">
-    <input type="password" class="form-control" name="password2" id="password2" placeholder="패스워드확인">
-  </div>
-
-  <div class="input-group mb-3">
-    <input type="text" class="form-control" placeholder="이름" name="username" id="username" 
-    value="<%=dto.getUsername()%>">
-  </div>
-
-  <div class="input-group mb-3">
-    <input type="text" class="form-control" placeholder="닉네임" name="nickname" id="nickname"
-    value="<%=dto.getNickname()%>" >
-  </div>
-
-  <div class="input-group mb-3">
-    <input type="text" class="form-control" placeholder="email" name="email" id="email"
-    value="<%=dto.getEmail()%>" >
-  </div>
-
-  <div class="input-group mb-3">
-    <input type="text" class="form-control" placeholder="전화번호" name="phone" id="phone"
-    value="<%=dto.getPhone()%>">
-  </div>
-
-  <div class="input-group mb-3">
-    <input type="text" class="form-control" placeholder="우편번호" name="zipcode" id="zipcode"
-    value="<%=dto.getZipcode()%>">
-  </div>
-  <div class="input-group mb-3">
-    <input type="text" class="form-control" placeholder="도로주소" name="address1" id="address1"
-    value="<%=dto.getAddress1()%>">
-  </div>
-
-  <div class="input-group mb-3">
-    <input type="text" class="form-control" placeholder="상세주소" name="address2" id="address2"
-    value="<%=dto.getAddress2()%>">
-  </div>    
-  
-
-
-  <!-- 다음 우편 api :주소체계 번지 -> 길  -->
-  
-     <div class="container" style="text-align:right">
-    
-     <div class="btn-group">
-       
-       <button type="button" class="btn btn-primary" onclick="goWrite()">등록</button>&nbsp;&nbsp;
-      
-       <button type="button" class="btn btn-primary" onclick="goCancel()">취소</button>&nbsp;&nbsp;
-     </div>
-   </div>
-
-</div>
-
-</form>   
-
+	<%@include file="../include/nav.jsp"%>
+	<%MemberDto dto = (MemberDto) request.getAttribute("memberDto");%>
+	<form name="myform" id="myform">
+		<div class="container" style="margin-top: 80px">
+			<h1>회원가입</h1>
+			<%
+			if (dto.getUser_id().equals("")) {
+			%>
+			<div class="duplicate">
+			<input type="hidden" name="idcheck" id="idcheck" value="N" />
+			<input type="text" class="form-control" placeholder="아이디" name="user_id" id="user_id">
+			<button type="button" id="btnDuplicate">중복체크</button>
+			</div>
+			<%
+			} else {
+			%>
+			<input type="hidden" name="idcheck" id="idcheck" value="Y" />
+			<input type="text" class="form-control" placeholder="아이디" name="user_id" id="user_id" value="<%=dto.getUser_id()%>" readonly>
+			<%
+			}
+			%>
+			<input type="password" class="form-control" name="user_password" id="user_password" placeholder="비밀번호">
+			<input type="password" class="form-control" name="userpw2" id="userpw2" placeholder="비밀번호확인">
+			<input type="text" class="form-control" placeholder="이름" name="user_name" id="user_name" value="<%=dto.getUser_name()%>">
+			<input type="text" class="form-control" placeholder="email"name="user_mail" id="user_mail" value="<%=dto.getUser_mail()%>">
+			<input type="text" class="form-control" placeholder="전화번호" name="user_phone" id="user_phone" value="<%=dto.getUser_phone()%>">
+			<button type="button" class="btn btn-primary" onclick="goWrite()">가입</button>&nbsp;&nbsp;
+			<button type="button" class="btn btn-primary" onclick="goCancel()">취소</button>&nbsp;&nbsp;
+		</div>
+	</form>
 </body>
 </html>
 
@@ -113,7 +50,7 @@ $(()=>{
       $("#btnDuplicate").click(()=>{
          $.ajax({
             url:"${commonURL}/member/isDuplicate", //요청 url정보
-            data:{userid:$("#userid").val()},   //서버로 전달할 데이터정보: JSON형태
+            data:{user_id:$("#user_id").val()},   //서버로 전달할 데이터정보: JSON형태
             dataType:"json",  //결과를 jSON으로 받겠다. 결과가 text로 온다
             type:"POST"
          })
@@ -129,8 +66,8 @@ $(()=>{
            {
               alert("사용가능합니다.")
               $("#idcheck").val("Y");
-              $("#userid").prop("readonly", true);   //수정못하게 막는 기능
-              
+              $("#user_id").prop("readonly", true);   //수정못하게 막는 기능
+            
            }
          })
          .fail((error)=>{
@@ -143,8 +80,9 @@ $(()=>{
 function goWrite()
 {
    var frmData = new FormData(document.myform);
-   console.log( frmData );
-   var userid='<%=dto.getUserid()%>';
+   console.log(frmData);
+   var userid='<%=dto.getUser_id()%>';
+   console.log(userid);
    if (userid =='')
    {
 	   url="${commonURL}/member/insert";	 
@@ -172,17 +110,10 @@ function goWrite()
    })
 }
 
-function goModify()
-{
-   var frm = document.form;
-   frm.action="/board/modify_save";
-   frm.submit();
-}
-
 function goCancel()
 {
-  var frm = document.form;
-   frm.action="/board/list";
-   frm.submit();
+	  var frm = document.myform;
+	   frm.action="${commonURL}/member/login";
+	   frm.submit();
 }
 </script>

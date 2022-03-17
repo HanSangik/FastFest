@@ -7,12 +7,12 @@ request.setAttribute("commonURL", request.getContextPath());
 
 // request 객체에 저장된 데이터를 ${변수명} 이렇게 가져다 쓸수있어요
 // 
-
+String id= StringUtil.nullToValue(session.getAttribute("id"), "");
 String userid= StringUtil.nullToValue(session.getAttribute("userid"), "");
 String username= StringUtil.nullToValue(session.getAttribute("username"), "");
 String email= StringUtil.nullToValue(session.getAttribute("email"), "");
 String phone= StringUtil.nullToValue(session.getAttribute("phone"), "");
-
+String userLevel=StringUtil.nullToValue(session.getAttribute("userLevel"),"");	//공지사항 글쓰기는 관리자만
 %>
 <meta charset="UTF-8">
 
@@ -90,35 +90,26 @@ String phone= StringUtil.nullToValue(session.getAttribute("phone"), "");
     </head>
     <body>
         <div id="main_menu" style="display:flex;">
-            <div class="logo_area" style="display:flex;">
-                <a href=""><img src="<%=request.getContextPath()%>/resources/images/logo3.png" alt="" style="height:230px; margin-top:-20px; margin-left:20px; display:flex;"></a>
+            <div class="logo_area" style="display:flex; z-index:-10">
+                <a href="http://localhost:8080/FastFest/" style="height:150px;"><img src="<%=request.getContextPath()%>/resources/images/logo3.png" alt="" style="height:230px; margin-top:-20px; margin-left:20px; display:flex;"></a>
             </div>
            <div class="inner_main_menu">
                 <ul id="menu">
-                    <li><a href="">Home</a></li>
-                    <li><a href="">About</a></li>
-                    <li><a href="">Detail</a>
-                        <ul style = "background: #cfffe5">
-                            <li><a href="">Dropdown Menu</a></li>
-                            <li><a href="">Dropdown Menu</a>
-                                <ul >
-                                    <li><a href="">Dropdown Sub Menu</a></li>
-                                    <li><a href="">Dropdown Sub Menu</a></li>
-                                    <li><a href="">Dropdown Sub Menu</a></li>
-                                    <li><a href="">Dropdown Sub Menu</a></li>
-                                    <li><a href="">Dropdown Sub Menu</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="">Dropdown Menu</a></li>
-                            <li><a href="">Dropdown Menu</a></li>
+                    <li><a href="http://localhost:8080/FastFest/">Home</a></li>
+                    <li><a  class="nav-link" href="${commonURL}/note/list">공지사항</a></li>
+                    <li><a href="">게시판</a>
+                        <ul style = "background: #0067a3">
+                            <li><a href="http://localhost:8080/FastFest/freeboard/list">자유게시판</a></li>
+                            <li><a href="http://localhost:8080/FastFest/gallery/list">갤러리</a></li>
+                            <li><a href="http://localhost:8080/FastFest/like/list">즐겨찾기</a></li>
                         </ul>
                     </li>
-                    <li><a href="">Contact</a></li>
+                    <li><a href="http://localhost:8080/FastFest/calendar">이달의 축제</a></li>
                     
                     
                     <%if(userid.equals("")) {%>
                     <li style="margin-right:60px"><a href="">로그인</a>
-                        <ul>
+                        <ul style = "background: #0067a3">
                             <li><a class="nav-link" href="${commonURL}/member/login">로그인</a>
            			</li>
                             <li><a class="nav-link" href="${commonURL}/member/join">회원가입</a>
@@ -127,7 +118,7 @@ String phone= StringUtil.nullToValue(session.getAttribute("phone"), "");
                     </li>
                     <%}else{%>
                     <li><a href="">내정보</a>
-                        <ul>
+                        <ul style = "background: #0067a3">
                             <li><a class="nav-link" href="${commonURL}/member/myinfo">내정보</a>
            			</li>
                             <li><a class="nav-link" href="${commonURL}/member/logout">로그아웃</a>
@@ -142,7 +133,7 @@ String phone= StringUtil.nullToValue(session.getAttribute("phone"), "");
             </div>
         </div>
         
-        
+     <!-- 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script src="jquery.slicknav.min.js"></script>
     <script type="text/javascript">
@@ -150,5 +141,6 @@ String phone= StringUtil.nullToValue(session.getAttribute("phone"), "");
             $('#menu').slicknav();
         });
     </script>
+     -->  
     </body>
 </html>

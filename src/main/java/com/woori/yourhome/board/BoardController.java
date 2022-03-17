@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.woori.yourhome.comment.CommentDto;
+import com.woori.yourhome.comment2.Comment2Dto;
 
 @Controller 
 public class BoardController {
@@ -130,6 +131,54 @@ public class BoardController {
 	HashMap<String, String> comment_delete(CommentDto dto)
 	{
 		service.comment_delete(dto);
+		
+		HashMap<String, String>map = new HashMap<String, String>();
+		map.put("result", "success");
+		return map; 
+	}	
+	
+	
+	
+	@RequestMapping(value="/comment2/write")
+	@ResponseBody
+	HashMap<String, String> comment2_write(Comment2Dto dto)
+	{
+		System.out.println("comment_id : " + dto.getComment_id());
+		if( dto.getComment_id().equals(""))
+			service.comment2_insert(dto);
+		else
+			service.comment2_update(dto);
+		
+		HashMap<String, String>map = new HashMap<String, String>();
+		map.put("result", "success");
+		return map; 
+	}
+	
+	@RequestMapping(value="/comment2/list")
+	@ResponseBody
+	List<Comment2Dto> comment2_list(Comment2Dto dto)
+	{
+		System.out.println("board_id : " + dto.getBoard_id());
+		List<Comment2Dto> list = service.getComment2List(dto);
+		return list; 
+	}
+	
+	
+	@RequestMapping(value="/comment2/getView")
+	@ResponseBody
+	Comment2Dto comment2_getView(Comment2Dto dto)
+	{
+		System.out.println("id : " + dto.getId());
+		Comment2Dto resultDto = service.getComment2View(dto);
+		return resultDto; 
+	}
+	
+
+	@RequestMapping(value="/comment2/delete")
+	@ResponseBody
+	HashMap<String, String> comment2_delete(Comment2Dto dto)
+	{
+		service.comment2_delete(dto);
 		
 		HashMap<String, String>map = new HashMap<String, String>();
 		map.put("result", "success");

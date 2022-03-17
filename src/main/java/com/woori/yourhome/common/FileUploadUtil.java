@@ -1,7 +1,13 @@
 package com.woori.yourhome.common;
 
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -51,16 +57,32 @@ public class FileUploadUtil {
 				 
 				 int pos = orifilename.lastIndexOf(".");       //맨뒤쪽의 . 위치를 파악한다. 
 				 String ext = orifilename.substring(pos+1);    //확장자
-				 String oriFile = orifilename.substring(0, pos); //파일명만 
-							 
-				 String filename = multipartFile.getOriginalFilename(); //새로만들 파일명 
+				 String oriFile = orifilename.substring(0, pos); //파일명만
+				 
+				 SimpleDateFormat simpleDate = new SimpleDateFormat("yyyMMddHHmmss");
+				 Date time = new Date();
+				 String today = simpleDate.format(time);
+				 try {
+					Date selectDate = simpleDate.parse(today);
+					Calendar cal = new GregorianCalendar(Locale.KOREA);
+					 cal.setTime(selectDate);
+					 today = simpleDate.format(cal.getTime());
+					 System.out.println("======파일명======"+today);
+					 
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				
+				 
+				 //String filename = multipartFile.getOriginalFilename(); //새로만들 파일명 ///
+				 String filename = today;
 				 File newFile = new File(filePath+"/" +filename); //원래 파일명 
 				 int i=1;
 				 while(newFile.exists())  //이미존재하면   a(1).jpg, a(2).jpg
 				 {
 					
-					 filename = oriFile + "("+i+")." + ext;  //새로운 파일명을 만들어서 
+					 filename = oriFile + "("+i+")." + ext;  //새로운 파일명을 만들어서 ///
 					 i++;
 					 newFile = new File(filePath+"/" +filename);
 					 

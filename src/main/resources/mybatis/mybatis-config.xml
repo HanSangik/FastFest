@@ -12,13 +12,14 @@
     	<typeAlias alias="ScoreDto" type="com.woori.yourhome.score.ScoreDto"/>	
     	<typeAlias alias="GalleryDto" type="com.woori.yourhome.gallery.GalleryDto"/>	
     	<typeAlias alias="MemberDto" type="com.woori.yourhome.member.MemberDto"/>	
-    
     	<typeAlias alias="CommentDto" type="com.woori.yourhome.comment.CommentDto"/>	
     	<typeAlias alias="MainDto" type="com.woori.yourhome.main.MainDto"/>
+    	<typeAlias alias="Main2Dto" type="com.woori.yourhome.main2.Main2Dto"/>
     	<typeAlias alias="DateDto" type="com.woori.yourhome.calenmap.DateDto"/>
     	<typeAlias alias="FestDataDto" type="com.woori.yourhome.calenmap.FestDataDto"/>
-    		
-
+    	<typeAlias alias="Comment2Dto" type="com.woori.yourhome.comment2.Comment2Dto"/>	
+    	<typeAlias alias="LikeDto" type="com.woori.yourhome.like.LikeDto"/>	
+    	<typeAlias alias="NoteDto" type="com.woori.yourhome.note.NoteDto"/>
 	</typeAliases>
 
 	<mappers>
@@ -26,11 +27,16 @@
 		<mapper resource=	"/com/woori/yourhome/mapper/Board.xml"/>
 		<mapper resource=	"/com/woori/yourhome/mapper/Score.xml"/>
 		<mapper resource=	"/com/woori/yourhome/mapper/Gallery.xml"/>
-		<mapper resource=	"/com/woori/yourhome/mapper/Member.xml"/>
+		<mapper resource=	"/com/woori/yourhome/mapper/Member.xml"/>		
 		<mapper resource=	"/com/woori/yourhome/mapper/Comment.xml"/>
 		<mapper resource=	"/com/woori/yourhome/mapper/Main.xml"/>	 
-		<mapper resource=	"/com/woori/yourhome/mapper/Calenmap.xml"/>		 
+		<mapper resource=	"/com/woori/yourhome/mapper/Main2.xml"/>	
+		<mapper resource=	"/com/woori/yourhome/mapper/Calenmap.xml"/>
+		<mapper resource=	"/com/woori/yourhome/mapper/Comment2.xml"/>		
+		<mapper resource=	"/com/woori/yourhome/mapper/Like.xml"/>		 
 
+		<mapper resource=	"/com/woori/yourhome/mapper/Calenmap.xml"/>		 
+		<mapper resource=	"/com/woori/yourhome/mapper/Note.xml"/>		
 	</mappers>
 	
 </configuration>

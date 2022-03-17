@@ -11,112 +11,106 @@
 	     
 	<!-- if test="key=='1'"  - 이렇게 쓰면 안된다 인식안된다 -->
 	
-	<select id="Main_getList"  parameterType="MainDto"  
-	                                resultType="MainDto">
+	<select id="Main_getList"  parameterType="MainDto"  resultType="MainDto">
  		
- 	select * from
-	(
-	        select
-			seq
-			,userid
-			,title
-			,contents   
-			,ifnull(hit , 0) hit      
-			,group_id
-			,depth
-			,g_level
-			,regdate
-		from free_board 
-		order by group_id desc, g_level asc 
-	)A limit 0,5
+ 		select 
+ 			note_seq
+ 			,note_userid
+ 			,note_title
+ 			,note_contents
+ 			,note_regdate
+ 			,note_moddate
+ 			,note_hit
+ 			,rnum
+ 		from 
+ 		(
+	 		select
+	 			A.note_seq
+				,A.note_userid
+				,A.note_title
+				,A.note_contents
+				,A.note_regdate
+				,A.note_moddate
+				,A.note_hit
+				,@rownum := @rownum+1 AS rnum
+				from pro1_note_board A, (select @rownum:=0) B
+				
+				
+			<if test='key!=null and keyword!=null'>
 	
+				<if test='key=="1"'>
+				where note_title like concat('%', #{keyword} , '%') or
+				      note_contents like concat('%', #{keyword} , '%')
+				</if>
+				
+				<if test='key=="2"'>
+				where note_title like concat('%', #{keyword} , '%')
+				</if>
+				
+				<if test='key=="3"'>
+				where note_contents like concat('%', #{keyword} , '%')
+				</if>
+				
+				<if test='key=="4"'>
+				where note_title like concat('%', #{keyword} , '%') or
+				      note_contents like concat('%', #{keyword} , '%') 
+				</if>
+				
+			</if> 
+			
+			order by note_seq desc
+		) A
+		limit #{start}, #{pageSize}    
+		
+		
 	</select>
 	
-	<select id="Main_getTotal"  parameterType="MainDto"  
-	                                resultType="Integer">
- 		
- 	select count(*) from free_board	
+	
+	<select id="Main_getTotal" parameterType="MainDto" resultType="Integer">
+		select count(*) from pro1_note_board
+		<if test='key!=null and keyword!=null'>
+			
+			<if test='key=="1"'>
+			where note_title like concat('%', #{keyword} , '%') or
+			      note_contents like concat('%', #{keyword} , '%') or 
+			      note_userid like concat('%', #{keyword} , '%') 
+			</if>
+			
+			<if test='key=="2"'>
+			where note_title like concat('%', #{keyword} , '%')
+			</if>
+			
+			<if test='key=="3"'>
+			where note_contents like concat('%', #{keyword} , '%')
+			</if>
+			
+			<if test='key=="4"'>
+			where note_title like concat('%', #{keyword} , '%') or
+			      note_contents like concat('%', #{keyword} , '%') 
+			</if>
+		</if>
 	</select>
 	
-	<select id="Main_getView"  parameterType="MainDto"  
-	                                resultType="MainDto">
-	  select
-			seq
-			,userid
-			,title
-			,contents   
-			,ifnull(hit , 0) hit      
-			,group_id
-			,depth
-			,g_level
-			,regdate
-		from free_board where seq=#{seq}
+	
+	
+
+	
+	
+	
+		<select id="Main_getView" parameterType="String" resultType="MainDto">
+		select
+		 	 A.note_seq
+			,A.note_userid
+			,A.note_title
+			,A.note_contents
+			,A.note_regdate
+			,A.note_hit
+		from pro1_note_board A where note_seq=#{note_seq}
 	</select>
-	
-	<insert id="Main_insert"  parameterType="MainDto"  >
-		<selectKey resultType="String" keyProperty="seq" order="BEFORE">
-		select ifnull(max(seq),0)+1 as seq 
-		from free_board
-		</selectKey>
-		insert into free_board(
-			seq
-			,title
-			,userid
-			,contents
-			,regdate
-			,hit
-			,group_id
-			,depth
-			,g_level
-		)
-		values(
-			#{seq}
-			,#{title}
-			,#{userid}
-			,#{contents}
-			,now()
-			,0
-			,#{seq}
-			,0
-			,1	
-		)
-	</insert>
-	
-	
-	<insert id="Main_reply"  parameterType="MainDto"  >
-		<selectKey resultType="String" keyProperty="seq" order="BEFORE">
-		select ifnull(max(seq),0)+1 as seq 
-		from free_board
-		</selectKey>
-		insert into free_board(
-			seq
-			,title
-			,userid
-			,contents
-			,regdate
-			,hit
-			,group_id
-			,depth
-			,g_level
-		)
-		values(
-			#{seq}
-			,#{title}
-			,#{userid}
-			,#{contents}
-			,now()
-			,0
-			,#{group_id}   --  부모것을 가져온다 
-			,#{depth}+1
-			,#{g_level}+1	
-		)
-	</insert>
-	
-	<update id="Main_updateLevel" parameterType="MainDto">
-	update free_board set g_level=g_level+1 
-	where group_id=#{group_id} and g_level>#{g_level}     
-	</update>
-	
+		
+		
+		
+		
 		
 </mapper>
 

@@ -14,9 +14,11 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Dongle:wght@300&display=swap" rel="stylesheet">
 </head>
 <body>
+
 <%
 	String key = StringUtil.nullToValue(request.getParameter("key"), "1");
 	String keyword = StringUtil.nullToValue(request.getParameter("keyword"), "");
@@ -24,15 +26,17 @@
 	int totalCnt = (Integer)request.getAttribute("totalCnt");
 	List<GalleryDto> list = (List<GalleryDto>)request.getAttribute("galleryList");
 %> 
-
+<!--  style="font-family: 'Dongle', sans-serif; font-size:20pt" -->
 <%@include file="../include/nav.jsp" %>
 
 <form name="myform" method="get">
 	<input type="hidden" name="key" id="key" value="<%=key%>"/>
 	<input type="hidden" name="pg"  id="pg" value="<%=pg%>"/>
 	<input type="hidden" name="id"  id="id" value=""/>
+	<input type="hidden" name="usernum" id="usernum" value="<%=id%>" />
+	
 
-    <div class="container" style="margin-top:80px">
+    <div class="container" style="margin-top:100px; font-family: 'Dongle', sans-serif; font-size:20pt">
         <h2>게시판 목록 (${totalCnt}건)</h2>
 
         <div class="input-group mb-3" style="margin-top:20px;">
@@ -54,12 +58,29 @@
         	<div class="row">
              <!-- 한행시작 -->
             <% for( GalleryDto dto : list){ %>
-            <div class="col-sm-3">
+            <div class="col-sm-3" style="margin-right:50px !important">
               <div class="thumbnail">
-                <a href="../upload/<%=dto.getImage()%>" target="_blank">
-                  <img src="../upload/<%=dto.getImage()%>" alt="Lights" style="width:100%">
+                <a href="#none" onclick="goView('<%=dto.getId()%>')">
+                  <img src="../upload/<%=dto.getImage()%>" alt="no_image" style="width:200px; height:200px; object-fit:contain; border: 1px solid; border-color:#C9C9C9">
                   <div class="caption">
-                    <a href="#none" onclick="goView('<%=dto.getId()%>')"><p><%=dto.getComment()%></p></a>
+                    <a href="#none" onclick="goView('<%=dto.getId()%>')"><div style="width:150px;text-overflow: ellipsis;  overflow:hidden; white-space:nowrap;"><%=dto.getTitle()%></div></a>
+                  	<p>추천수 : <td><%= dto.getLikehit()%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  	
+                  	
+                  <%
+                  if(dto.getLikeYN()==1){%>
+                	 <a href="#none" onclick="unlike('<%=dto.getId()%>')" id="likeon<%=dto.getId()%>">
+                  		<img src="<%=request.getContextPath()%>/resources2/images/full_star.png" alt="Lights"
+                  		 style="width:20px; height:20px;" id = "btnlike<%=dto.getId()%>">
+                  		</a>
+                  <%}else{%>
+                  		<a href="#none" onclick="golike('<%=dto.getId()%>')" id="likeon<%=dto.getId()%>">
+                  		<img src="<%=request.getContextPath()%>/resources2/images/blank_star.png" alt="Lights"
+                  		 style="width:20px; height:20px;" id = "btnlike<%=dto.getId()%>">
+                  		 </a>
+                  <%}%>
+                 
+                  	</td></p>
                   </div>
                 </a>
               </div>
@@ -69,15 +90,13 @@
              <!-- 한행종료 -->
           </div>
 
-
-		
  		  <div class="container mt-3" style="text-align:right;">
        	  	<%=Pager.makeTag(request, 12, totalCnt)%>
        	  </div>
        	  
           <div class="container mt-3" style="text-align:right;">
             <a href="<%=request.getContextPath()%>/gallery/write" 
-               class="btn btn-secondary">글쓰기</a>
+               class="btn btn-secondary" style="width:80px;height:40px;font-size:15pt">글쓰기</a>
           </div>
           
     </div>
@@ -88,10 +107,12 @@
 
 <script>
 
+
 window.onload=function(){
 	let key = '<%=key%>';
 	var texts=["", "선택하세요", "제목", "내용", "제목+내용"];
 	document.getElementById("searchItem").innerHTML=texts[key];
+	
 }
 
 
@@ -128,6 +149,64 @@ function goView(id)
 	frm.action="${pageContext.request.contextPath}/gallery/view";
 	frm.submit();
 }
+
+
+function golike(id){
+	 var userid ='<%=userid%>';
+	 var board_id = id;
+	 
+		 console.log("---------------------")
+		 console.log($("#usernum").val());
+		 console.log("---------------------")  
+	   if(userid == ""){
+	      alert("로그인하세요");
+	      location.href="${commonURL}/member/login";
+	   }
+	  
+	   $.ajax({
+		   url:"${commonURL}/gallery/like?board_id="+board_id+"&"+"userSeq="+$("#usernum").val(),
+		      type:"GET",
+		      dataType:"JSON"
+		   })
+		   .done( (result)=>{
+			   $("#btnlike"+id).attr("src", "<%=request.getContextPath()%>/resources2/images/full_star.png");
+	    	   $("#likeon"+id).attr("onclick", "unlike('"+board_id+"')");
+	    	   
+		   })
+		   .fail( (error)=>{
+		      console.log(error);
+		   })
+	   
+	  
+}
+
+function unlike(id){
+	var userid ='<%=userid%>';
+	var board_id = id;
+	  
+	   if(userid == ""){
+	      alert("로그인하세요");
+	      location.href="${commonURL}/member/login";
+	   }
+	   
+		   $.ajax({
+			   url:"${commonURL}/gallery/unlike?board_id="+board_id+"&userSeq"+"="+$("#usernum").val(),
+			      type:"GET",
+			      dataType:"JSON"
+			   })
+			   .done( (result)=>{
+				  
+		    	   $("#btnlike"+id).attr("src", "<%=request.getContextPath()%>/resources2/images/blank_star.png");
+		    	   $("#likeon"+id).attr("onclick", "golike('"+board_id+"')");
+		    	   
+			   })
+			   .fail( (error)=>{
+			      console.log(error);
+			   })
+	  
+	   
+}
+
 
 
 </script>

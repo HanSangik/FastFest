@@ -109,7 +109,7 @@ function getList(areaId){
     console.log(queryString);
     
      $.ajax({
-      url:"/yourhome/calendar/list",
+      url:"<%=request.getContextPath()%>/calendar/list",
       data:queryString,
       type:"POST",
     })
@@ -125,9 +125,9 @@ function getList(areaId){
      }
      
       result.forEach( (item) => {
-    	  const image_url = "'/yourhome/resources/images/" + item.fes_IMG+"'";
-    	  const mapimage_url = "'/yourhome/resources/images/별.png'";
-    	  const map_url = "'/yourhome/calendar/kakaomap?addr="+item.fes_ADDRESS+"&fes_name="+ item.fes_NAME+ "&fes_place="+ item.fes_PLACE+ "'";
+    	  const image_url = "'<%=request.getContextPath()%>/resources/images/" + item.fes_IMG+"'";
+    	  const mapimage_url = "'<%=request.getContextPath()%>/resources/images/별.png'";
+    	  const map_url = "'<%=request.getContextPath()%>/calendar/kakaomap?addr="+item.fes_ADDRESS+"&fes_name="+ item.fes_NAME+ "&fes_place="+ item.fes_PLACE+ "'";
     	  
     	  console.log(map_url);
  
