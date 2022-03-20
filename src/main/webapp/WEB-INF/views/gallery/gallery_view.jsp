@@ -93,7 +93,7 @@ width:100%;
          	<a href="#none" onclick="goDelete()" class="btn btn-secondary"style="width:80px;height:40px;font-size:15pt">삭제</a>
           <%}%>
           <%if(!userid.equals("")) {%>
-         	<a href="#none" onclick="golike()" class="btn btn-secondary" id ="btn_like"style="width:80px;height:40px;font-size:15pt">즐겨찾기</a>
+         	<a href="#none" onclick="golike()" class="btn btn-secondary" id ="btn_like"style="width:80px;height:40px;font-size:13pt">즐겨찾기</a>
          	<a href="#none" onclick="golikelist()" class="btn btn-secondary" id ="btn_like"style="width:80px;height:40px;font-size:15pt">즐겨찾기목록</a>
 		  <%}%>
           </div>
